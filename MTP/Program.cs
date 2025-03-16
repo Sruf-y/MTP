@@ -1,20 +1,90 @@
 ﻿
 using MTP;
+using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
 
 class Program
 {
+    
     static void Main()
     {
-
-
-        Console.WriteLine(TimeOnly.Parse(DateTime.Now.ToString()));
+        exercitiul7();
     }
 
 
 
 
+
+    public delegate void NotificareDelegate(string mesaj); // Definirea delegatului
+    static void exercitiul7()
+    {
+       
+
+        Magazin magazin = new Magazin();
+        // Adaugam metode la delegat (multicast delegate)
+        magazin.Notificare += TrimiteEmail;
+        magazin.Notificare += TrimiteSMS;
+        // Plasam o comanda
+        magazin.PlaseazaComanda("Laptop", "Ion Popescu");
+
+
+        static void TrimiteEmail(string mesaj)
+        {
+            Console.WriteLine($"[EMAIL] {mesaj}");
+        }
+        static void TrimiteSMS(string mesaj)
+        {
+            Console.WriteLine($"[SMS] {mesaj}");
+        }
+    }
+
+    
+
+    class Magazin
+    {
+        public event NotificareDelegate Notificare; // Eveniment bazat pe delegat
+        public void PlaseazaComanda(string produs, string client)
+        {
+            Console.WriteLine($"Comanda pentru {produs} a fost plasata de {client}.");
+            // Apelam delegatul
+            if (Notificare != null)
+            {
+                Notificare($"Comanda pentru {produs} este in procesare.");
+            }
+        }
+    }
+
+
+    static void exercitiul6()
+    {
+        ArrayList a=new ArrayList();
+        a.Add(2);
+        a.Add("Andrei");
+
+        foreach(dynamic i in a)
+        {
+            Console.WriteLine(i.ToString());
+        }
+    }
+
+    static void exercitiul5()
+    {
+        // stringbuilder
+        StringBuilder sb = new StringBuilder("Hello world!");
+
+        sb.Append(" My friend");
+
+        ArrayList a = new ArrayList();
+
+        Console.WriteLine(sb);
+
+        
+    }
+
    static void exercitiul4()
     {
+        // using get/set
         Student a=new Student("Andrei");
         a.name = "Botofan";
         Console.WriteLine(a.name);
@@ -84,5 +154,8 @@ class Program
             Console.WriteLine(item);
         }
     }
+
 }
+
+
 
